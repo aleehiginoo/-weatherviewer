@@ -15,12 +15,10 @@ public class Weather {
 
     public Weather(long timeStamp, double minTemp, double maxTemp, double humidity, String description, String iconName){
         //NumberFormat para formatar temperaturas em double arredondando-as em inteiros:
-        NumberFormat numberFormat = NumberFormat.getInstance();
-        numberFormat.setMaximumFractionDigits(0);
 
         this.dayOfWeek = convertTimeStampToDay(timeStamp);
-        this.minTemp = numberFormat.format(minTemp) + "\u00B0F";
-        this.maxTemp = numberFormat.format(maxTemp) + "\u00B0F";
+        this.minTemp = convertFahrenheitCelcius(minTemp);
+        this.maxTemp = convertFahrenheitCelcius(maxTemp);
         this.humidity = NumberFormat.getPercentInstance().format(humidity /100.0);
         this.description = description;
         this.iconURL = "http://openweathermap.org/img/w/" + iconName + ".png";
@@ -35,5 +33,12 @@ public class Weather {
         //SimpleDateFormat que retorna o nome do dia:
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE");
         return simpleDateFormat.format(calendar.getTime());
+    }
+
+    private static String convertFahrenheitCelcius(double temp) {
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        numberFormat.setMaximumFractionDigits(0);
+
+        return numberFormat.format((temp - 32) * (0.5556))  + "\u00B0C";
     }
 }
